@@ -2,12 +2,10 @@ import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  Menu,
   Github,
   MessageCircle,
-  MoreVertical,
   UserRound,
   Share2,
 } from "lucide-react";
@@ -19,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { combinedInformation } from "@/lib/DynamicValues";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { IRoutedSection } from "@/lib/Models";
 import { getValueAtIndex, scrollToView } from "@/lib/utils";
 
