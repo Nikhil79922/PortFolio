@@ -9,11 +9,11 @@ class DynamicValues {
     static directMessageItems: Array<IDirectMessageItem> = [
         {
             name: "WhatsApp",
-            link: "https://api.whatsapp.com/send?phone=7992238245"
+            link: 'https://api.whatsapp.com/send?phone=917992238245',
         },
         {
             name: "Linked In",
-            link: "www.linkedin.com/in/nikhil-kumar-singh-a167b2279"
+            link: "https://www.linkedin.com/in/nikhil-kumar-singh-a167b2279/"
         },
         {
             name: "Github",

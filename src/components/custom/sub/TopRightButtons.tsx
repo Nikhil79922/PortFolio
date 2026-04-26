@@ -119,14 +119,14 @@ const TopRightButtons: React.FC<Props> = (props) => {
   return (
     <Card className="w-full h-12">
       <ShareDialog open={isDialogOpen} setDialogOpen={setDialogOpen} />
-      <CardContent className="p-1 flex flex-row h-full items-center justify-between">
+      <CardContent className="flex flex-row items-center justify-between h-full p-1">
         <div className="flex flex-row items-center">
           <Button
             disabled
             variant="ghost"
             size="icon"
           >
-            <UserRound className="h-4 w-4" />
+            <UserRound className="w-4 h-4" />
           </Button>
 
           <h1 className="text-sm font-bold tracking-wider cursor-pointer" onClick={gotoTop}>
@@ -138,7 +138,7 @@ const TopRightButtons: React.FC<Props> = (props) => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" title="Send Direct Message">
-                <MessageCircle className="h-4 w-4" />
+                <MessageCircle className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
 
@@ -157,12 +157,12 @@ const TopRightButtons: React.FC<Props> = (props) => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button variant="ghost" size="icon" title="Source code" onClick={() => window.open(`https://github.com/priyayadav13/portfolio/`, "_blank")}>
-            <Github className="h-4 w-4" />
+          <Button variant="ghost" size="icon" title="Source code" onClick={() => window.open(`https://github.com/Nikhil79922/`, "_blank")}>
+            <Github className="w-4 h-4" />
           </Button>
 
           <Button variant="ghost" size="icon" title="Share" onClick={() => setDialogOpen(true)}>
-            <Share2 className="h-4 w-4" />
+            <Share2 className="w-4 h-4" />
           </Button>
 
         </div>
