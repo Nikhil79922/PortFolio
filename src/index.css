@@ -1,76 +1,321 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
- 
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
- 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
- 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
- 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
- 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
- 
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 239 84% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 42%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
- 
-    --radius: 0.5rem;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 239 84% 60%;
+    --radius: 0.75rem;
+    --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+    --brand-2: 188 94% 37%;
+    --grain-opacity: 0.025;
   }
- 
+
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
- 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
- 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
- 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
- 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
- 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
- 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
- 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
- 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 96%;
+    --card: 240 8% 6.5%;
+    --card-foreground: 0 0% 96%;
+    --popover: 240 8% 7%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 239 84% 67%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 5% 12%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 240 5% 12%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 240 5% 13%;
+    --accent-foreground: 0 0% 96%;
+    --destructive: 0 62.8% 45%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5% 15%;
+    --input: 240 5% 15%;
+    --ring: 239 84% 67%;
+    --brand-2: 188 86% 53%;
+    --grain-opacity: 0.045;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground;
+  html {
+    /* Offset anchor scrolling for the sticky mobile header (h-14). */
+    scroll-padding-top: 3.5rem;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  ::selection {
+    background: hsl(var(--primary) / 0.3);
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  /* ---------- Type ---------- */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      110deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--brand-2)) 45%,
+      hsl(var(--primary)) 90%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 8s ease-in-out infinite;
+  }
+
+  .caret {
+    display: inline-block;
+    width: 0.55em;
+    height: 1em;
+    margin-left: 0.35em;
+    vertical-align: -0.12em;
+    background: currentColor;
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  /* ---------- Backdrop ---------- */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, hsl(var(--foreground) / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--foreground) / 0.05) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+
+  .glow {
+    background:
+      radial-gradient(600px circle at 15% 0%, hsl(var(--primary) / 0.18), transparent 60%),
+      radial-gradient(500px circle at 85% 10%, hsl(var(--brand-2) / 0.12), transparent 60%);
+    animation: drift 24s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  .grain {
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- Cards with cursor spotlight + glowing border ---------- */
+  /* No backdrop-blur here on purpose: blurring ~25 cards costs a GPU pass per frame while scrolling. */
+  /* Use as "card-surface" (static) or "card-surface card-interactive" (lifts on hover). */
+  .card-surface {
+    @apply relative rounded-xl border bg-card/80;
+    --x: 50%;
+    --y: 50%;
+    transition:
+      background-color 0.5s var(--ease-smooth),
+      border-color 0.5s var(--ease-smooth),
+      box-shadow 0.6s var(--ease-smooth),
+      transform 0.6s var(--ease-smooth);
+  }
+  @media (hover: hover) {
+    .card-interactive:hover {
+      @apply bg-card shadow-xl shadow-primary/[0.06];
+      transform: translateY(-4px);
+      transition-delay: 40ms;
+    }
+  }
+
+  @media (hover: hover) {
+    .card-surface::before,
+    .card-surface::after {
+      content: "";
+      position: absolute;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s var(--ease-smooth);
+    }
+    /* Soft fill that follows the cursor */
+    .card-surface::before {
+      inset: 0;
+      background: radial-gradient(420px circle at var(--x) var(--y), hsl(var(--primary) / 0.08), transparent 45%);
+    }
+    /* 1px gradient border that lights up near the cursor */
+    .card-surface::after {
+      inset: -1px;
+      padding: 1px;
+      background: radial-gradient(
+        280px circle at var(--x) var(--y),
+        hsl(var(--primary) / 0.75),
+        hsl(var(--brand-2) / 0.35) 35%,
+        transparent 60%
+      );
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+    .card-surface:hover::before,
+    .card-surface:hover::after {
+      opacity: 1;
+    }
+  }
+
+  /* ---------- Tech marquee ---------- */
+  .marquee {
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 45s linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  /* ---------- System diagram ---------- */
+  /* Static dashes: animating stroke-dashoffset repaints the whole SVG every frame. */
+  .flow-line {
+    stroke-dasharray: 4 6;
+  }
+
+  /* ---------- Scroll progress (progressive enhancement, no JS) ---------- */
+  .scroll-progress {
+    display: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      display: block;
+      transform-origin: 0 50%;
+      animation: grow-x linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+
+/* Animated theme switch (View Transitions API): a soft circular reveal from the toggle. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  animation: theme-reveal 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+@keyframes theme-reveal {
+  from { clip-path: circle(0 at var(--vt-x, 50%) var(--vt-y, 0%)); }
+  to { clip-path: circle(150% at var(--vt-x, 50%) var(--vt-y, 0%)); }
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-3%, 2%, 0) scale(1.08); }
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+@keyframes grow-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Thin, theme-aware scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (min-width: 1024px) {
+  html {
+    scroll-padding-top: 0;
+  }
+}
+
+/*
+ * Reduced motion (also turned on by Windows "Animation effects: off" and macOS "Reduce motion").
+ * WCAG-aligned: remove *movement* — travel, zoom, spin, perpetual loops, smooth scrolling —
+ * but keep gentle opacity/colour fades, so the UI still feels smooth instead of snapping.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  /* Entrances/exits (tailwindcss-animate): fade only, no slide/zoom/spin. */
+  .animate-in,
+  .animate-out {
+    --tw-enter-translate-x: 0 !important;
+    --tw-enter-translate-y: 0 !important;
+    --tw-enter-scale: 1 !important;
+    --tw-enter-rotate: 0 !important;
+    --tw-exit-translate-x: 0 !important;
+    --tw-exit-translate-y: 0 !important;
+    --tw-exit-scale: 1 !important;
+    --tw-exit-rotate: 0 !important;
+  }
+  /* Perpetual motion stops entirely. */
+  .marquee-track,
+  .glow,
+  .text-gradient,
+  .caret,
+  .animate-ping,
+  .animate-spin,
+  .animate-bounce {
+    animation: none !important;
+  }
+  .animate-ping {
+    display: none;
+  }
+  .packet {
+    display: none;
+  }
+  /* No lift on hover; colour/border fades remain. */
+  .card-interactive:hover {
+    transform: none !important;
+  }
+  /* View-transition circular wipe → simple cross-fade. */
+  ::view-transition-new(root) {
+    animation: vt-fade 0.45s ease both;
+  }
+}
+@keyframes vt-fade {
+  from { opacity: 0; }
 }

@@ -1,7 +1,8 @@
-import React from "react";
-import { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { flushSync } from "react-dom";
 
-type Theme = "dark" | "light" | "system";
+export type Theme = "dark" | "light" | "system";
+export type ResolvedTheme = "dark" | "light";
 
 type ThemeProviderProps = {
   children: React.ReactNode;
@@ -9,66 +10,87 @@ type ThemeProviderProps = {
   storageKey?: string;
 };
 
+/** Screen point the theme-switch animation should expand from (e.g. the clicked button). */
+export type ThemeOrigin = { x: number; y: number };
+
 type ThemeProviderState = {
+  /** The user's choice (may be "system"). */
   theme: Theme;
-  setTheme: (theme: Theme) => void;
+  /** What is actually applied right now. */
+  resolvedTheme: ResolvedTheme;
+  setTheme: (theme: Theme, origin?: ThemeOrigin) => void;
 };
 
-const initialState: ThemeProviderState = {
-  theme: "system",
-  setTheme: () => null,
+const ThemeProviderContext = createContext<ThemeProviderState | undefined>(undefined);
+
+const MEDIA = "(prefers-color-scheme: dark)";
+const getSystemTheme = (): ResolvedTheme => (window.matchMedia(MEDIA).matches ? "dark" : "light");
+
+const readStored = (key: string, fallback: Theme): Theme => {
+  try {
+    const v = localStorage.getItem(key);
+    return v === "dark" || v === "light" || v === "system" ? v : fallback;
+  } catch {
+    return fallback;
+  }
 };
 
-const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+type ViewTransitionDocument = Document & { startViewTransition?: (cb: () => void) => unknown };
 
-export function ThemeProvider({
-  children,
-  defaultTheme = "system",
-  storageKey = "vite-ui-theme",
-  ...props
-}: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
-  );
+export function ThemeProvider({ children, defaultTheme = "system", storageKey = "vite-ui-theme" }: ThemeProviderProps) {
+  const [theme, setThemeState] = useState<Theme>(() => readStored(storageKey, defaultTheme));
+  const [systemTheme, setSystemTheme] = useState<ResolvedTheme>(getSystemTheme);
 
+  // Follow OS-level changes live while in "system" mode.
   useEffect(() => {
-    const root = window.document.documentElement;
+    const mql = window.matchMedia(MEDIA);
+    const onChange = () => setSystemTheme(mql.matches ? "dark" : "light");
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
 
+  const resolvedTheme: ResolvedTheme = theme === "system" ? systemTheme : theme;
+
+  // Layout effect: the class must be applied synchronously so a view transition captures it.
+  useLayoutEffect(() => {
+    const root = document.documentElement;
     root.classList.remove("light", "dark");
+    root.classList.add(resolvedTheme);
+    root.style.colorScheme = resolvedTheme;
+  }, [resolvedTheme]);
 
-    if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
+  const value = useMemo<ThemeProviderState>(
+    () => ({
+      theme,
+      resolvedTheme,
+      setTheme: (next: Theme, origin?: ThemeOrigin) => {
+        try {
+          localStorage.setItem(storageKey, next);
+        } catch {
+          /* storage unavailable (private mode) — still apply for this session */
+        }
 
-      root.classList.add(systemTheme);
-      return;
-    }
-
-    root.classList.add(theme);
-  }, [theme]);
-
-  const value = {
-    theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
-      setTheme(theme);
-    },
-  };
-
-  return (
-    <ThemeProviderContext.Provider {...props} value={value}>
-      {children}
-    </ThemeProviderContext.Provider>
+        // Reduced-motion users get a cross-fade instead of the wipe (handled in CSS).
+        const doc = document as ViewTransitionDocument;
+        if (!doc.startViewTransition || next === theme) {
+          setThemeState(next);
+          return;
+        }
+        const root = document.documentElement;
+        root.style.setProperty("--vt-x", origin ? `${origin.x}px` : "50%");
+        root.style.setProperty("--vt-y", origin ? `${origin.y}px` : "0%");
+        doc.startViewTransition(() => flushSync(() => setThemeState(next)));
+      },
+    }),
+    [theme, resolvedTheme, storageKey]
   );
+
+  return <ThemeProviderContext.Provider value={value}>{children}</ThemeProviderContext.Provider>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext);
-
-  if (context === undefined)
-    throw new Error("useTheme must be used within a ThemeProvider");
-
+  if (context === undefined) throw new Error("useTheme must be used within a ThemeProvider");
   return context;
 };

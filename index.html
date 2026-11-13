@@ -2,31 +2,77 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1wZXJzb24tc3RhbmRpbmciPjxjaXJjbGUgY3g9IjEyIiBjeT0iNSIgcj0iMSIvPjxwYXRoIGQ9Im05IDIwIDMtNiAzIDYiLz48cGF0aCBkPSJtNiA4IDYgMiA2LTIiLz48cGF0aCBkPSJNMTIgMTB2NCIvPjwvc3ZnPg==" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Third iteration of my personal portfolio - beautifully created using ReactJS, Shadcn etc" />
-    <meta name="keywords" content="react, open-source, github-pages, portfolio, typescript, reactjs, portfolio-website, free, beautiful, portfolio-site, react-template, portfolio-template, developer-portfolio, portfolio-app, react-portfolio, p32929, portfolio-sites, shadcn-ui, shadcn, shadcn-react, frontend, web-development, web-developer, javascript, UI/UX, responsive-design, personal-website, single-page-application, SPA, creative-portfolio, minimalistic-design, modern-design, tech-portfolio, software-engineer, developer-tools" />
-    <meta name="author" content="p32929" />
-    <meta property="og:title" content="Nikhil Singh" />
-    <meta property="og:description" content="Third iteration of my personal portfolio - beautifully created using ReactJS, Shadcn etc" />
-    <meta property="og:image" content="https://i.ibb.co/2Z9CMbN/image.png" />
-    <meta property="og:url" content="https://github.com/Nikhil79922/PortFolio" />
+    <title>Nikhil Kumar Singh — Java Backend Developer</title>
+    <meta name="description" content="Nikhil Kumar Singh — Java Backend Developer specialising in Spring Boot, microservices, Kafka and event-driven systems. Experience, projects and contact." />
+    <meta name="author" content="Nikhil Kumar Singh" />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="canonical" href="https://nikhil79922.github.io/PortFolio/" />
+
     <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="Nikhil Kumar Singh" />
+    <meta property="og:title" content="Nikhil Kumar Singh — Java Backend Developer" />
+    <meta property="og:description" content="Spring Boot, microservices, Kafka and event-driven backend systems." />
+    <meta property="og:url" content="https://nikhil79922.github.io/PortFolio/" />
+    <meta property="og:image" content="https://nikhil79922.github.io/PortFolio/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Nikhil Kumar Singh — Java Backend Developer" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Nikhil Singh" />
-    <meta name="twitter:description" content="Third iteration of my personal portfolio - beautifully created using ReactJS, Shadcn etc" />
-    <meta name="twitter:image" content="https://i.ibb.co/2Z9CMbN/image.png" />
-    <title>Nikhil Singh</title>
+    <meta name="twitter:title" content="Nikhil Kumar Singh — Java Backend Developer" />
+    <meta name="twitter:description" content="Spring Boot, microservices, Kafka and event-driven backend systems." />
+    <meta name="twitter:image" content="https://nikhil79922.github.io/PortFolio/og-image.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Nikhil Kumar Singh",
+        "jobTitle": "Java Backend Developer",
+        "url": "https://nikhil79922.github.io/PortFolio/",
+        "knowsAbout": ["Java", "Spring Boot", "Microservices", "Apache Kafka", "Redis", "PostgreSQL", "Docker", "AWS"],
+        "sameAs": [
+          "https://github.com/Nikhil79922",
+          "https://www.linkedin.com/in/nikhil-kumar-singh-a167b2279/",
+          "https://leetcode.com/u/NikkssyDev/"
+        ]
+      }
+    </script>
+
+    <script>
+      // Apply the saved theme before first paint to avoid a light/dark flash.
+      (function () {
+        try {
+          var t = localStorage.getItem("vite-ui-theme") || "dark";
+          if (t === "system") t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          document.documentElement.classList.add(t === "light" ? "light" : "dark");
+        } catch (e) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <noscript>
-      <div>
-        <p>This website requires JavaScript to function properly. Please enable JavaScript in your browser settings and refresh the page.</p>
-      </div>
+      <main style="max-width: 40rem; margin: 4rem auto; padding: 0 1.5rem; font-family: system-ui, sans-serif; line-height: 1.6">
+        <h1 style="margin: 0">Nikhil Kumar Singh</h1>
+        <p style="margin: 0.25rem 0 1rem">Java Backend Developer — Spring Boot, microservices, Kafka, Redis, Docker, AWS.</p>
+        <p>
+          <a href="mailto:nikhil38245@gmail.com">Email</a> ·
+          <a href="https://www.linkedin.com/in/nikhil-kumar-singh-a167b2279/" rel="noopener noreferrer">LinkedIn</a> ·
+          <a href="https://github.com/Nikhil79922" rel="noopener noreferrer">GitHub</a>
+        </p>
+        <p><small>Enable JavaScript to see the full portfolio.</small></p>
+      </main>
     </noscript>
   </body>
 </html>

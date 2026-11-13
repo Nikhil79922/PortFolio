@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
-    /* Shadcn */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "experimentalDecorators": true,
 
     /*  */
     "target": "ES2020",

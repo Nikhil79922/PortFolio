@@ -1,81 +1,102 @@
-import { combinedInformation } from "@/lib/DynamicValues";
-import { ICombinedInformation } from "@/lib/Models";
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
-export const getValueAtIndex = (arr: any[], index: number): any | undefined => {
-  const length = arr.length;
+/** Fired by scrollToSection so navigation can highlight the target immediately… */
+export const NAV_TARGET_EVENT = "nav:target";
+/** …and this one when the scroll has finished (or was interrupted by the user). */
+export const NAV_DONE_EVENT = "nav:done";
 
-  // Normalize negative indices
-  if (index < 0) {
-    index += length;
+const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+let cancelActiveScroll: (() => void) | null = null;
+
+/**
+ * Eased scroll to a section. Slower and softer than the browser's native smooth scroll,
+ * duration scales with distance (0.7–1.1s), and it yields instantly to the user: any wheel,
+ * touch or key press cancels it. Reduced-motion users get an instant jump.
+ */
+export const scrollToSection = (id: string) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  cancelActiveScroll?.();
+  window.dispatchEvent(new CustomEvent(NAV_TARGET_EVENT, { detail: id }));
+  history.replaceState(null, "", `#${id}`);
+
+  const root = document.documentElement;
+  const offset = parseFloat(getComputedStyle(root).scrollPaddingTop) || 0;
+  const maxY = root.scrollHeight - window.innerHeight;
+  const startY = window.scrollY;
+  const targetY = Math.min(maxY, Math.max(0, el.getBoundingClientRect().top + startY - offset));
+  const distance = targetY - startY;
+  const done = () => window.dispatchEvent(new Event(NAV_DONE_EVENT));
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || Math.abs(distance) < 2) {
+    window.scrollTo({ top: targetY, behavior: "instant" });
+    done();
+    return;
   }
 
-  // Check if the index is within bounds
-  if (index >= 0 && index < length) {
-    return arr[index];
-  } else {
-    return undefined; // Out of bounds
-  }
-}
+  const duration = Math.min(1100, Math.max(700, Math.abs(distance) * 0.35));
+  const start = performance.now();
+  let frame = 0;
 
-export const scrollToView = (id: string) => {
-  document.getElementById(id)?.scrollIntoView({
-    behavior: "smooth",
-  });
-  console.log(`Scrolled`);
-};
-
-export const isLinkString = (url: string) => {
-  const linkStrings = ["http", "skype:", "mailto:"];
-
-  for (var i = 0; i < linkStrings.length; i++) {
-    if (
-      (url ?? "").toString().toLowerCase().includes(linkStrings[i])
-    ) {
-      return true;
-    }
-  }
-
-  return false;
-};
-
-export const getRandomLink = (): string | null => {
-  const allLinks: string[] = [];
-
-  // Collect links from directMessageItems
-  combinedInformation.directMessageItems.forEach(item => {
-    if (isLinkString(item.link)) {
-      allLinks.push(item.link);
-    }
-  });
-
-  // Helper function to collect links recursively from nested items
-  const collectLinks = (items: any[]) => {
-    items.forEach(item => {
-      if (item.link && isLinkString(item.link)) {
-        allLinks.push(item.link);
-      }
-      if (item.arr) {
-        collectLinks(item.arr);
-      }
-    });
+  const stop = () => {
+    cancelAnimationFrame(frame);
+    window.removeEventListener("wheel", stop);
+    window.removeEventListener("touchstart", stop);
+    window.removeEventListener("keydown", stop);
+    cancelActiveScroll = null;
+    done();
+  };
+  const step = (now: number) => {
+    const t = Math.min(1, (now - start) / duration);
+    window.scrollTo({ top: startY + distance * easeInOutCubic(t), behavior: "instant" });
+    if (t < 1) frame = requestAnimationFrame(step);
+    else stop();
   };
 
-  // Collect links from routes
-  combinedInformation.routes.forEach(route => {
-    collectLinks(route.items);
-  });
+  window.addEventListener("wheel", stop, { passive: true });
+  window.addEventListener("touchstart", stop, { passive: true });
+  window.addEventListener("keydown", stop);
+  cancelActiveScroll = stop;
+  frame = requestAnimationFrame(step);
+};
 
-  // Return a random link from the collected links
-  if (allLinks.length > 0) {
-    const randomIndex = Math.floor(Math.random() * allLinks.length);
-    return allLinks[randomIndex];
-  } else {
-    return null; // Return null if no links are found
+/**
+ * Only allow safe, expected link targets: https URLs, mailto:, and same-site paths
+ * ("/..."). Protocol-relative URLs ("//host") and javascript:/data: are rejected.
+ */
+export const isSafeHref = (url?: string): url is string =>
+  !!url && (/^(https:\/\/|mailto:)/i.test(url) || /^\/(?!\/)/.test(url));
+
+/**
+ * Copies text to the clipboard. Falls back to a hidden <textarea> + execCommand when the
+ * async Clipboard API is unavailable or blocked (insecure context, unfocused document).
+ */
+export const copyText = async (text: string): Promise<boolean> => {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      return document.execCommand("copy");
+    } catch {
+      return false;
+    } finally {
+      ta.remove();
+    }
   }
 };
+
+/** Links that should open in a new tab (anything except mailto:). */
+export const opensNewTab = (url: string) => !/^mailto:/i.test(url);
