@@ -426,4 +426,4 @@ const SystemPanel = () => {
   );
 };
 
-export default SystemPan
+export default SystemPanel;
