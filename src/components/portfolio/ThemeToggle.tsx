@@ -43,14 +43,14 @@ export const ThemeMenu = () => {
           <TriggerIcon key={theme} className="size-4 animate-in spin-in-90 fade-in duration-500 ease-smooth" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-40 duration-300">
+      <DropdownMenuContent align="end" className="w-44 duration-300 lg:w-40">
         <DropdownMenuLabel className="text-xs font-medium text-muted-foreground">Appearance</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {OPTIONS.map(({ value, label, icon: Icon }) => (
           <DropdownMenuItem
             key={value}
             onSelect={() => setTheme(value, centerOf(triggerRef.current))}
-            className="cursor-pointer gap-2"
+            className="cursor-pointer gap-2.5 py-2.5 transition-colors duration-200 lg:py-1.5"
             aria-checked={theme === value}
             role="menuitemradio"
           >

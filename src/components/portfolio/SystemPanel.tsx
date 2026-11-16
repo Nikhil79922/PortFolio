@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { stats } from "@/lib/DynamicValues";
 import { cn } from "@/lib/utils";
+import { SCROLL_IDLE_EVENT, SCROLL_START_EVENT } from "@/hooks/useScrollingClass";
 
 /* ------------------------------------------------------------------------------------------
  * A representative event-driven architecture, rendered as a live SVG with simulated traffic.
@@ -129,13 +130,24 @@ const Diagram = ({ active, setActive, running }: { active: string | null; setAct
   const svgRef = useRef<SVGSVGElement>(null);
   const pointerType = useRef<string>("mouse");
 
-  // Pause SMIL animations when off-screen / tab hidden / reduced motion.
+  // Pause SMIL animations when off-screen / tab hidden / reduced motion — and while the page is
+  // scrolling: SMIL forces a layout + paint every frame (measured), so scrolling would stutter.
   useEffect(() => {
     const svg = svgRef.current;
     if (!svg) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (running && !reduce) svg.unpauseAnimations();
-    else svg.pauseAnimations();
+    const canAnimate = running && !reduce;
+    const sync = () => {
+      if (canAnimate && !document.documentElement.classList.contains("is-scrolling")) svg.unpauseAnimations();
+      else svg.pauseAnimations();
+    };
+    sync();
+    window.addEventListener(SCROLL_START_EVENT, sync);
+    window.addEventListener(SCROLL_IDLE_EVENT, sync);
+    return () => {
+      window.removeEventListener(SCROLL_START_EVENT, sync);
+      window.removeEventListener(SCROLL_IDLE_EVENT, sync);
+    };
   }, [running, L.key]);
 
   const connected = useMemo(() => {

@@ -13,6 +13,7 @@ import Skills from "./components/portfolio/Skills";
 import TechMarquee from "./components/portfolio/TechMarquee";
 import { Toaster } from "./components/ui/toaster";
 import { useActiveSection } from "./hooks/useActiveSection";
+import { useScrollingClass } from "./hooks/useScrollingClass";
 import { useSpotlight } from "./hooks/useSpotlight";
 import { navItems } from "./lib/DynamicValues";
 
@@ -43,6 +44,7 @@ const Content = memo(function Content() {
 function App() {
   const active = useActiveSection(SECTION_IDS);
   useSpotlight();
+  useScrollingClass();
 
   return (
     <>
@@ -63,6 +65,7 @@ function App() {
       <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
         <div className="glow absolute inset-x-0 top-0 h-[680px]" />
         <div className="bg-grid absolute inset-x-0 top-0 h-[680px]" />
+        <div className="glow-bottom absolute inset-x-0 bottom-0 h-[55vh]" />
         <div className="grain absolute inset-0" />
       </div>
 

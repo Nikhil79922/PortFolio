@@ -57,6 +57,10 @@ export function ThemeProvider({ children, defaultTheme = "system", storageKey = 
     root.classList.remove("light", "dark");
     root.classList.add(resolvedTheme);
     root.style.colorScheme = resolvedTheme;
+    // Match the mobile browser bar / status bar to the page (not the OS theme).
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", getComputedStyle(document.body).backgroundColor);
   }, [resolvedTheme]);
 
   const value = useMemo<ThemeProviderState>(

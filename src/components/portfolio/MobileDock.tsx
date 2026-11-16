@@ -27,7 +27,7 @@ const MobileDock = ({ active }: { active: string }) => {
       className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] lg:hidden"
     >
       <ul
-        className="pointer-events-auto relative grid w-full max-w-md rounded-2xl border bg-background/90 p-1.5 shadow-2xl shadow-black/25 backdrop-blur-md animate-in fade-in slide-in-from-bottom-6 fill-mode-both delay-150 duration-500 ease-smooth"
+        className="pointer-events-auto relative grid w-full max-w-md rounded-2xl border bg-card p-1.5 shadow-2xl shadow-black/40 dark:border-t-[hsl(var(--edge))] animate-in fade-in slide-in-from-bottom-6 fill-mode-both delay-150 duration-500 ease-smooth"
         style={{ gridTemplateColumns: `repeat(${navItems.length}, minmax(0, 1fr))` }}
       >
         {/* Sliding active indicator */}

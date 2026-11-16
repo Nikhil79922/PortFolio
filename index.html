@@ -11,8 +11,8 @@
     <meta name="author" content="Nikhil Kumar Singh" />
     <meta name="robots" content="index, follow" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <!-- Mobile browser bar colour. Follows the site's theme (not the OS); kept in sync by ThemeProvider. -->
+    <meta name="theme-color" content="#0a0c14" />
     <meta name="color-scheme" content="dark light" />
     <link rel="canonical" href="https://nikhil79922.github.io/PortFolio/" />
 
@@ -47,15 +47,17 @@
     </script>
 
     <script>
-      // Apply the saved theme before first paint to avoid a light/dark flash.
+      // Apply the saved theme (and matching browser-bar colour) before first paint — no flash.
       (function () {
+        var t = "dark";
         try {
-          var t = localStorage.getItem("vite-ui-theme") || "dark";
+          t = localStorage.getItem("vite-ui-theme") || "dark";
           if (t === "system") t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-          document.documentElement.classList.add(t === "light" ? "light" : "dark");
-        } catch (e) {
-          document.documentElement.classList.add("dark");
-        }
+        } catch (e) {}
+        t = t === "light" ? "light" : "dark";
+        document.documentElement.classList.add(t);
+        var m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.setAttribute("content", t === "light" ? "#ffffff" : "#0a0c14");
       })();
     </script>
   </head>

@@ -16,7 +16,7 @@ const MobileHeader = ({ active }: { active: string }) => {
   const current = navItems.find((n) => n.id === active)?.label ?? "";
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur-md animate-in fade-in slide-in-from-top-2 duration-500 ease-smooth lg:hidden">
+    <header className="sticky top-0 z-40 border-b bg-background shadow-[0_1px_0_0_hsl(var(--foreground)/0.02)] animate-in fade-in slide-in-from-top-2 duration-500 ease-smooth lg:hidden">
       <div className="flex h-14 items-center justify-between gap-2 px-4 sm:px-6">
         <a
           href="#home"
