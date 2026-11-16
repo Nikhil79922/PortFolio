@@ -35,17 +35,30 @@ function preloadPrimaryFont(): Plugin {
  * Inline <script> blocks (the theme pre-paint script) are allowed by SHA-256 hash,
  * computed here so the policy can never drift out of sync with the markup.
  * Build-only: Vite's dev server relies on inline scripts for hot reload.
+ *
+ * Line endings: on Windows the source HTML has CRLF, but `gh-pages` publishes through git, which
+ * normalises to LF — so a hash of the CRLF text would not match the served file and the browser
+ * would block the script. The HTML is therefore normalised to LF before hashing, and the CRLF
+ * variant's hash is included too, so the policy matches whichever form a host ends up serving.
  */
+const sha256 = (text: string) => `'sha256-${createHash("sha256").update(text).digest("base64")}'`;
+
 function contentSecurityPolicy(): Plugin {
   return {
     name: "content-security-policy",
     apply: "build",
     transformIndexHtml: {
       order: "post",
-      handler(html) {
-        const hashes = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(
-          ([, body]) => `'sha256-${createHash("sha256").update(body).digest("base64")}'`
-        );
+      handler(rawHtml) {
+        const html = rawHtml.replace(/\r\n/g, "\n");
+        const hashes = [
+          ...new Set(
+            [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].flatMap(([, body]) => [
+              sha256(body),
+              sha256(body.replace(/\n/g, "\r\n")),
+            ])
+          ),
+        ];
         const policy = [
           "default-src 'self'",
           `script-src 'self' ${hashes.join(" ")}`.trim(),
