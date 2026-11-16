@@ -2,7 +2,7 @@
 
 Personal portfolio of a Java Backend Developer (Spring Boot · Microservices · Kafka · Redis · AWS).
 
-**Live:** https://nikhil79922.github.io/PortFolio/
+**Live:** https://nikhil-portfolio-79922.vercel.app/
 
 ![Preview](public/og-image.png)
 
@@ -12,7 +12,8 @@ Personal portfolio of a Java Backend Developer (Spring Boot · Microservices · 
 - Tailwind CSS with shadcn/ui primitives (Radix UI)
 - Light / Dark / System theme, responsive layout, keyboard and screen-reader friendly
 - Zero third-party requests at runtime: fonts and logos are self-hosted
-- Strict Content-Security-Policy injected at build time (see `vite.config.ts`)
+- Strict Content-Security-Policy injected at build time (see `vite.config.ts`), plus security
+  and caching headers served by Vercel (see `vercel.json`)
 
 ## Edit the content
 
@@ -30,24 +31,25 @@ Requires Node.js 20.19+.
 
 ```bash
 npm ci            # install exact locked dependencies
-npm run dev       # http://localhost:3000/PortFolio/
+npm run dev       # http://localhost:3000/
 npm run check     # lint + typecheck + production build
-npm run preview   # serve the production build locally
+npm run preview   # serve the production build locally (http://localhost:4173/)
 ```
 
-## Deploy to GitHub Pages
+## Deploy (Vercel)
+
+The site is hosted on [Vercel](https://vercel.com), connected to this GitHub repository.
+Deploying is just pushing:
 
 ```bash
 git add -A
 git commit -m "Update portfolio"
 git push origin master
-npm run deploy
 ```
 
-`npm run deploy` refuses to run with uncommitted changes, so the live site always matches
-a commit on GitHub. It then lints, typechecks, builds and publishes `dist/` to the
-`gh-pages` branch. In the repository settings, **Pages → Source** must be
-*Deploy from a branch* → `gh-pages` / `(root)`.
+Every push to `master` triggers a production deployment; pushes to other branches get a
+preview deployment. Build settings, security headers and asset caching live in
+[`vercel.json`](vercel.json) — no settings need to be configured in the Vercel dashboard.
 
 ## License
 

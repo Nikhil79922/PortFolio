@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nikhil-portfolio-79922.vercel.app/sitemap.xml

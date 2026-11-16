@@ -31,15 +31,14 @@ function preloadPrimaryFont(): Plugin {
 
 /**
  * Injects a strict Content-Security-Policy <meta> tag into the production HTML.
- * GitHub Pages can't send security headers, so the policy is delivered in-page.
- * Inline <script> blocks (the theme pre-paint script) are allowed by SHA-256 hash,
- * computed here so the policy can never drift out of sync with the markup.
+ * The policy lives in-page (not in vercel.json) because it must carry the SHA-256 hash of the
+ * inline theme pre-paint script, which is computed here at build time so it can never drift out
+ * of sync with the markup. Header-only directives (frame-ancestors) are set in vercel.json.
  * Build-only: Vite's dev server relies on inline scripts for hot reload.
  *
- * Line endings: on Windows the source HTML has CRLF, but `gh-pages` publishes through git, which
- * normalises to LF — so a hash of the CRLF text would not match the served file and the browser
- * would block the script. The HTML is therefore normalised to LF before hashing, and the CRLF
- * variant's hash is included too, so the policy matches whichever form a host ends up serving.
+ * Line endings: a Windows checkout has CRLF while Vercel builds from git on Linux (LF). The HTML
+ * is normalised to LF before hashing and the CRLF variant's hash is included too, so the policy
+ * matches no matter where the build runs.
  */
 const sha256 = (text: string) => `'sha256-${createHash("sha256").update(text).digest("base64")}'`;
 
@@ -84,16 +83,9 @@ function contentSecurityPolicy(): Plugin {
   };
 }
 
-/**
- * Public base path, per host:
- *  - Vercel serves the site at the domain root → "/" (Vercel sets VERCEL=1 during its builds).
- *  - GitHub Pages serves this repo under /PortFolio/ (`npm run deploy`, local preview).
- * BASE_PATH overrides both, e.g. for another host.
- */
-const base = process.env.BASE_PATH ?? (process.env.VERCEL ? "/" : "/PortFolio/");
-
+// Hosted on Vercel, which serves the site from the domain root.
 export default defineConfig({
-  base,
+  base: "/",
   plugins: [
     react(),
     preloadPrimaryFont(),
