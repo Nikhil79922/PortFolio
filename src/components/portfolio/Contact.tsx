@@ -25,16 +25,16 @@ const Contact = () => {
   return (
     <Section id="contact" eyebrow="Contact" title="Let's build something reliable">
       <Reveal>
-        <div className="relative overflow-hidden rounded-2xl border bg-card p-6 sm:p-10">
+        <div className="relative overflow-hidden rounded-2xl border bg-card p-5 sm:p-10">
           <div aria-hidden className="glow pointer-events-none absolute inset-0 opacity-80" />
-          <div className="relative grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
+          <div className="relative grid gap-8 sm:gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
             <div>
-              <p className="max-w-lg text-lg text-muted-foreground">
-                I'm currently {profile.availability.toLowerCase()} in Java backend and microservices
-                engineering. The fastest way to reach me is by email — I usually reply within a day.
+              <p className="max-w-lg text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-lg">
+                Open to Java backend and microservices roles. Email is the fastest way to reach me — I
+                usually reply within a day.
               </p>
-              <div className="mt-7 flex flex-wrap gap-3">
-                <Button size="lg" asChild>
+              <div className="mt-6 grid gap-2.5 sm:mt-7 sm:flex sm:flex-wrap sm:gap-3">
+                <Button size="lg" className="w-full sm:w-auto" asChild>
                   <ExternalLink href={email?.href}>
                     <Mail className="mr-2 size-4" /> Email me
                   </ExternalLink>
@@ -42,6 +42,7 @@ const Contact = () => {
                 <Button
                   size="lg"
                   variant="outline"
+                  className="w-full min-w-0 sm:w-auto"
                   onClick={copyEmail}
                   aria-label={`Copy email address ${profile.email}`}
                   title="Copy email address"
@@ -51,9 +52,9 @@ const Contact = () => {
                   ) : (
                     <Copy key="copy" className="mr-2 size-4 animate-in fade-in zoom-in-75 duration-200" aria-hidden />
                   )}
-                  {profile.email}
+                  <span className="truncate">{profile.email}</span>
                 </Button>
-                <Button size="lg" variant="ghost" asChild>
+                <Button size="lg" variant="ghost" className="w-full sm:w-auto" asChild>
                   <ExternalLink href={profile.resumeUrl}>
                     <FileText className="mr-2 size-4" aria-hidden /> Résumé
                   </ExternalLink>
@@ -71,7 +72,7 @@ const Contact = () => {
                   <li key={s.kind}>
                     <ExternalLink
                       href={s.href}
-                      className="group flex items-center gap-3 rounded-xl border bg-background/60 p-3 transition-colors hover:border-primary/40 hover:bg-background"
+                      className="group flex items-center gap-3 rounded-xl border bg-background/60 p-3 transition-[border-color,background-color,transform] duration-300 ease-smooth hover:border-primary/40 hover:bg-background active:scale-[0.98]"
                     >
                       <span className="grid size-9 place-items-center rounded-lg bg-primary/10 text-primary">
                         <SocialIcon kind={s.kind} className="size-4" />
@@ -82,7 +83,7 @@ const Contact = () => {
                       </span>
                       <ArrowUpRight
                         aria-hidden
-                        className="size-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary"
+                        className="size-4 text-muted-foreground transition-[color,transform] duration-500 ease-smooth group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary"
                       />
                     </ExternalLink>
                   </li>

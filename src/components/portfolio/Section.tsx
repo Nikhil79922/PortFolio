@@ -76,17 +76,19 @@ export const Reveal = ({
 const Section = ({ id, eyebrow, title, description, className, children }: SectionProps) => {
   const n = navItems.findIndex((item) => item.id === id);
   return (
-  <section id={id} aria-labelledby={`${id}-title`} className={cn("py-14 sm:py-20", className)}>
-    <Reveal className="mb-8 max-w-2xl sm:mb-10">
-      <p className="mb-3 flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-primary">
+  <section id={id} aria-labelledby={`${id}-title`} className={cn("py-11 sm:py-20", className)}>
+    <Reveal className="mb-6 max-w-2xl sm:mb-10">
+      <p className="mb-2.5 flex items-center gap-3 font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-primary sm:mb-3 sm:text-xs">
         {n > 0 && <span className="text-muted-foreground">{String(n).padStart(2, "0")}</span>}
-        <span aria-hidden className="h-px w-8 bg-gradient-to-r from-primary to-brand2" />
+        <span aria-hidden className="h-px w-6 bg-gradient-to-r from-primary to-brand2 sm:w-8" />
         {eyebrow}
       </p>
-      <h2 id={`${id}-title`} className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+      <h2 id={`${id}-title`} className="text-balance text-[1.75rem] font-bold leading-tight tracking-tight sm:text-4xl">
         {title}
       </h2>
-      {description && <p className="mt-3 text-pretty text-base text-muted-foreground">{description}</p>}
+      {description && (
+        <p className="mt-2.5 text-pretty text-[15px] leading-relaxed text-muted-foreground sm:mt-3 sm:text-base">{description}</p>
+      )}
     </Reveal>
     {children}
   </section>

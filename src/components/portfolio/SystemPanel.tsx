@@ -21,25 +21,25 @@ interface FlowNode {
 }
 
 const NODES: FlowNode[] = [
-  { id: "client", label: "Clients", sub: "web · mobile", kind: "client", h: [85, 170], v: [180, 34],
+  { id: "client", label: "Clients", sub: "web · mobile", kind: "client", h: [85, 170], v: [180, 30],
     detail: "Web & mobile clients — 50K+ users across 5 production applications." },
-  { id: "gateway", label: "API Gateway", sub: "spring-cloud-gateway", kind: "edge", h: [265, 170], v: [180, 118],
+  { id: "gateway", label: "API Gateway", sub: "spring-cloud-gateway", kind: "edge", h: [265, 170], v: [180, 106],
     detail: "Spring Cloud Gateway — path-based routing, JWT validation and rate limiting at the edge." },
-  { id: "auth", label: "Auth", sub: "jwt · rbac", kind: "service", h: [460, 70], v: [62, 214],
+  { id: "auth", label: "Auth", sub: "jwt · rbac", kind: "service", h: [460, 70], v: [62, 190],
     detail: "Auth service — JWT with refresh-token rotation and role-based access control." },
-  { id: "booking", label: "Booking", sub: "spring-boot · jpa", kind: "service", h: [460, 170], v: [180, 214],
+  { id: "booking", label: "Booking", sub: "spring-boot · jpa", kind: "service", h: [460, 170], v: [180, 190],
     detail: "Booking service — Spring Boot + JPA; publishes domain events to Kafka." },
-  { id: "payment", label: "Payments", sub: "razorpay · idempotent", kind: "service", h: [460, 270], v: [298, 214],
+  { id: "payment", label: "Payments", sub: "razorpay · idempotent", kind: "service", h: [460, 270], v: [298, 190],
     detail: "Payment service — Razorpay integration with idempotency keys so retries never double-charge." },
-  { id: "redis", label: "Redis", sub: "cache · sessions", kind: "data", h: [665, 50], v: [62, 318],
+  { id: "redis", label: "Redis", sub: "cache · sessions", kind: "data", h: [665, 50], v: [62, 274],
     detail: "Redis — caching layer that takes hot reads off the database and cuts response times." },
-  { id: "kafka", label: "Kafka", sub: "event backbone", kind: "bus", h: [665, 170], v: [180, 318],
+  { id: "kafka", label: "Kafka", sub: "event backbone", kind: "bus", h: [665, 170], v: [180, 274],
     detail: "Apache Kafka — the event backbone that keeps services asynchronous and decoupled." },
-  { id: "postgres", label: "PostgreSQL", sub: "source of truth", kind: "data", h: [665, 290], v: [298, 318],
+  { id: "postgres", label: "PostgreSQL", sub: "source of truth", kind: "data", h: [665, 290], v: [298, 274],
     detail: "PostgreSQL — transactional source of truth through Hibernate / JPA." },
-  { id: "notify", label: "Notifications", sub: "email · sms · zendesk", kind: "service", h: [870, 110], v: [110, 422],
+  { id: "notify", label: "Notifications", sub: "email · sms · zendesk", kind: "service", h: [870, 110], v: [110, 358],
     detail: "Notification service — consumes events and fans out email, SMS and Zendesk updates." },
-  { id: "saga", label: "Saga", sub: "orchestrator", kind: "service", h: [870, 230], v: [250, 422],
+  { id: "saga", label: "Saga", sub: "orchestrator", kind: "service", h: [870, 230], v: [250, 358],
     detail: "Saga orchestrator — compensating transactions keep distributed state consistent." },
 ];
 
@@ -59,7 +59,7 @@ const EDGES: [string, string][] = [
 
 const LAYOUTS = {
   h: { key: "h", w: 960, h: 340, nodeW: 150, nodeH: 52 },
-  v: { key: "v", w: 360, h: 456, nodeW: 108, nodeH: 44 },
+  v: { key: "v", w: 360, h: 388, nodeW: 108, nodeH: 44 },
 } as const;
 type Layout = (typeof LAYOUTS)[keyof typeof LAYOUTS];
 
@@ -278,19 +278,19 @@ const LogStream = ({ running }: { running: boolean }) => {
   }, [running]);
 
   return (
-    <div aria-hidden className="flex h-[5.75rem] flex-col justify-end overflow-hidden font-mono text-[11px] leading-[1.45rem] sm:text-xs">
+    <div aria-hidden className="flex h-[4.35rem] flex-col justify-end overflow-hidden font-mono text-[11px] leading-[1.45rem] sm:h-[5.75rem] sm:text-xs">
       {lines.map(({ id, t, l: [lvl, svc, msg] }, i) => (
         <div
           key={id}
           className={cn(
-            "flex gap-2 whitespace-nowrap transition-opacity duration-500",
+            "flex min-w-0 gap-2 whitespace-nowrap transition-opacity duration-500",
             i === lines.length - 1 ? "animate-in fade-in slide-in-from-bottom-2 duration-700 ease-smooth" : "opacity-60"
           )}
         >
           <span className="hidden text-muted-foreground/70 sm:inline">{t}</span>
           <span className={lvl === "WARN" ? "text-amber-500" : "text-emerald-500"}>{lvl}</span>
-          <span className="w-14 shrink-0 text-primary">{svc}</span>
-          <span className="truncate text-foreground/80">{msg}</span>
+          <span className="w-[3.25rem] shrink-0 text-primary sm:w-14">{svc}</span>
+          <span className="min-w-0 flex-1 truncate text-foreground/80">{msg}</span>
         </div>
       ))}
     </div>
@@ -376,13 +376,13 @@ const SystemPanel = () => {
       </div>
 
       {/* Diagram */}
-      <div className="px-3 pb-2 pt-4 sm:px-5 sm:pt-5">
+      <div className="px-2 pb-1 pt-3 sm:px-5 sm:pb-2 sm:pt-5">
         <Diagram active={active} setActive={setActive} running={running} />
       </div>
 
       {/* Inspector + logs */}
-      <div className="grid border-t lg:grid-cols-[1fr_1.35fr]">
-        <div className="min-h-[5.75rem] border-b px-4 py-3 lg:border-b-0 lg:border-r" aria-live="polite">
+      <div className="grid grid-cols-1 border-t lg:grid-cols-[1fr_1.35fr]">
+        <div className="min-h-[4.75rem] min-w-0 border-b px-4 py-3 sm:min-h-[5.75rem] lg:border-b-0 lg:border-r" aria-live="polite">
           <p className="mb-1 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">Inspector</p>
           {node ? (
             <p key={node.id} className="text-sm leading-relaxed animate-in fade-in slide-in-from-left-2 duration-500 ease-smooth">
@@ -396,7 +396,7 @@ const SystemPanel = () => {
             </p>
           )}
         </div>
-        <div className="bg-muted/30 px-4 py-3 lg:rounded-none">
+        <div className="min-w-0 overflow-hidden bg-muted/30 px-4 py-3">
           <LogStream running={running} />
         </div>
       </div>

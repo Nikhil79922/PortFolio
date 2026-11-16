@@ -40,7 +40,7 @@ export const profile: IProfile = {
     initials: "NS",
     role: "Java Backend Developer",
     summary:
-        "2+ years designing and shipping REST APIs and microservices that serve 50,000+ users — with Java, Spring Boot, Hibernate/JPA, Kafka, the Saga pattern, Redis, Docker and AWS CI/CD.",
+        "2+ years shipping REST APIs and event-driven microservices for 50,000+ users — built with Java, Spring Boot, Kafka, Redis and the Saga pattern, deployed on AWS.",
     location: "India",
     availability: "Open to new opportunities",
     email: "nikhil38245@gmail.com",
@@ -75,19 +75,11 @@ export const experience: IExperience[] = [
         current: true,
         highlights: [
             "Delivered 5 production applications serving 50,000+ users at 99.9% uptime.",
-            "Designed and built 20+ REST APIs on Spring Boot with Kafka, RabbitMQ, Redis and an API Gateway.",
-            "Implemented JWT + RBAC security and Razorpay payments with idempotent processing.",
-            "Set up Docker + GitHub Actions CI/CD on AWS, cutting deployment time by 40%.",
+            "Designed 20+ Spring Boot REST APIs on Kafka, RabbitMQ, Redis and an API Gateway.",
+            "Secured services with JWT + RBAC; built idempotent Razorpay payment flows.",
+            "Automated Docker + GitHub Actions CI/CD on AWS — deployments 40% faster.",
         ],
         tags: ["Spring Boot", "Kafka", "RabbitMQ", "Redis", "AWS", "Docker"],
-    },
-    {
-        company: "TechnoHacks EduTech · CodSoft · Bharat Intern",
-        role: "Web Development Internships",
-        period: "Jul 2023 — Sep 2023",
-        highlights: [
-            "Short-term internship programs building responsive web interfaces and REST API integrations.",
-        ],
     },
 ];
 
@@ -211,10 +203,10 @@ export const alsoFamiliar: string[] = [
 
 export const projects: IProject[] = [
     {
-        title: "Banking Microservices — Saga Pattern",
+        title: "Banking Microservices",
         featured: true,
         description:
-            "Account, transfer, transaction and notification services using the Saga pattern for consistent distributed fund transfers — with compensating transactions, Kafka event messaging and idempotent consumers.",
+            "Account, transfer and notification services kept consistent by the Saga pattern — compensating transactions, Kafka events and idempotent consumers.",
         tags: ["Spring Boot", "Kafka", "PostgreSQL", "Saga"],
         repo: repo("Banking-System"),
     },
@@ -222,7 +214,7 @@ export const projects: IProject[] = [
         title: "Salon Booking Platform",
         featured: true,
         description:
-            "Six Spring Boot microservices (user, salon, category, offerings, booking, payment) behind Spring Cloud Gateway with path-based routing, Eureka discovery and load balancing.",
+            "Six Spring Boot services behind Spring Cloud Gateway, with path-based routing, Eureka service discovery and load balancing.",
         tags: ["Spring Cloud Gateway", "Eureka", "PostgreSQL", "Docker"],
         repo: repo("Salon-Management-System"),
     },
@@ -230,7 +222,7 @@ export const projects: IProject[] = [
         title: "Job Application Portal",
         featured: true,
         description:
-            "Microservices with an API Gateway, JWT refresh-token rotation, Redis caching, Kafka messaging and Razorpay payments, built on DTO validation and the repository pattern.",
+            "Gateway-fronted microservices with JWT refresh-token rotation, Redis caching, Kafka events and Razorpay payments.",
         tags: ["JWT", "Redis", "Kafka", "Razorpay"],
         repo: repo("job_application_portal"),
     },
@@ -238,34 +230,34 @@ export const projects: IProject[] = [
         title: "Real-Time Chat Application",
         featured: true,
         description:
-            "Real-time messaging handling concurrent socket connections, using RabbitMQ and Redis for asynchronous message queuing and caching.",
+            "Real-time messaging across concurrent socket connections, with RabbitMQ queues and Redis caching for async delivery.",
         tags: ["RabbitMQ", "Redis", "WebSockets"],
         repo: repo("Chat_Application"),
     },
     {
         title: "DonRifa",
         description:
-            "Microservices-based e-commerce system with an API Gateway, multiple payment workflows and event-driven notifications via email, SMS and Zendesk.",
+            "Microservices e-commerce platform with an API Gateway, multiple payment workflows and event-driven email, SMS and Zendesk notifications.",
         tags: ["Microservices", "Payments", "Notifications"],
     },
     {
         title: "Redis Caching Layer",
         description:
-            "Caching layer for frequently accessed data that significantly reduces API response time and improves throughput.",
+            "A caching layer for hot data that significantly cuts API response times and raises throughput.",
         tags: ["Redis", "Performance"],
         repo: repo("redis_Caching"),
     },
     {
-        title: "AgroNet — Final Year Project",
+        title: "AgroNet",
         description:
-            "Full-stack platform connecting farmers directly with buyers: product listings, order management and secure authentication.",
-        tags: ["Full-stack", "Auth"],
+            "Full-stack marketplace connecting farmers directly with buyers — listings, order management and secure authentication.",
+        tags: ["Final-year project", "Full-stack", "Auth"],
         repo: repo("AgroNet"),
     },
     {
         title: "GenAI Applications",
         description:
-            "Tools for text, image and audio generation using asynchronous pipelines and external AI APIs for scalable processing.",
+            "Text, image and audio generation tools built on asynchronous pipelines and external AI APIs.",
         tags: ["Node.js", "Async pipelines", "AI APIs"],
         repo: repo("genAI-Node"),
     },
