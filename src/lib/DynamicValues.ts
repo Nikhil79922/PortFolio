@@ -28,7 +28,7 @@ const logo = (name: string) => logos[`../assets/logos/${name}.svg`];
 const localResume = Object.values(
     import.meta.glob<string>("../assets/resume.pdf", { eager: true, query: "?url", import: "default" })
 )[0];
-const DRIVE_RESUME = "https://drive.google.com/file/d/1bm8whV2pOMs44I5w2UVcwXDwyb3iwwo2/view";
+const DRIVE_RESUME = "https://drive.google.com/file/d/1dS6xP0sRmNGNgZx-zLcl_d_ccAb-QNmL/view";
 
 const LINKEDIN = "https://www.linkedin.com/in/nikhil-kumar-singh-a167b2279/";
 const GITHUB = "https://github.com/Nikhil79922";

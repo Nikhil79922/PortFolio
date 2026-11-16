@@ -72,14 +72,17 @@ function contentSecurityPolicy(): Plugin {
 }
 
 export default defineConfig({
-  base: "/PortFolio/",
-  plugins: [react(), preloadPrimaryFont(), contentSecurityPolicy()],
+  base: "/",
+  plugins: [
+    react(),
+    preloadPrimaryFont(),
+    contentSecurityPolicy()
+  ],
   server: {
     port: 3000,
   },
   build: {
     sourcemap: false,
-    // Keep every asset as a file or data: URI that the CSP allows.
     assetsInlineLimit: 4096,
   },
   resolve: {
