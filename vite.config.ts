@@ -71,8 +71,16 @@ function contentSecurityPolicy(): Plugin {
   };
 }
 
+/**
+ * Public base path, per host:
+ *  - Vercel serves the site at the domain root → "/" (Vercel sets VERCEL=1 during its builds).
+ *  - GitHub Pages serves this repo under /PortFolio/ (`npm run deploy`, local preview).
+ * BASE_PATH overrides both, e.g. for another host.
+ */
+const base = process.env.BASE_PATH ?? (process.env.VERCEL ? "/" : "/PortFolio/");
+
 export default defineConfig({
-  base: "/",
+  base,
   plugins: [
     react(),
     preloadPrimaryFont(),
